@@ -1,10 +1,26 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
+const generateReadme = require("./utils/generateMarkdown.js");
 
 // array of questions for user
-const questionsPrompt = () => {
+const questions = () => {
     return inquirer.prompt([
 
+        // Name
+        {
+            type: "input",
+            name: "name",
+            message: "Enter your first and last name (Required)",
+            validate: nameInput => {
+                if (nameInput) {
+                    return true;
+                }
+                else {
+                    console.log("Please enter your first and last name!");
+                    return false;
+                }
+            }
+        },
         // GitHub username 
         {
             type: "input",
@@ -40,7 +56,7 @@ const questionsPrompt = () => {
         // Title of project
         {
             type: "input",
-            name: "email",
+            name: "title",
             message: "Enter the title of your project (Required)",
             validate: titleInput => {
                 if (titleInput) {
@@ -56,7 +72,7 @@ const questionsPrompt = () => {
         // Description of project
         {
             type: "input",
-            name: "email",
+            name: "description",
             message: "Enter a description for your project (Required)",
             validate: desciptionInput => {
                 if (desciptionInput) {
@@ -71,7 +87,7 @@ const questionsPrompt = () => {
         // Installation Instructions
         {
             type: "input",
-            name: "email",
+            name: "installation",
             message: "Enter installation instructions (Required)",
             validate: installInput => {
                 if (installInput) {
@@ -86,7 +102,7 @@ const questionsPrompt = () => {
         // Project Usage
         {
             type: "input",
-            name: "email",
+            name: "usage",
             message: "Enter usage information for your project (Required)",
             validate: usageInput => {
                 if (usageInput) {
@@ -98,13 +114,13 @@ const questionsPrompt = () => {
             }
         },
 
-        // Contribution
+        // Contributors
         {
             type: "input",
-            name: "email",
+            name: "contributors",
             message: "Enter contribution information (Required)",
-            validate: contributionInput => {
-                if (contributionInput) {
+            validate: contributorInput => {
+                if (contributorInput) {
                     return true;
                 }
                 else {
@@ -116,10 +132,10 @@ const questionsPrompt = () => {
         // Testing
         {
             type: "input",
-            name: "email",
+            name: "testing",
             message: "Please enter testing information (Required)",
             validate: testingInput => {
-                if (contributionInput) {
+                if (testingInput) {
                     return true;
                 }
                 else {
@@ -128,21 +144,44 @@ const questionsPrompt = () => {
             }
         },
 
-        // Liscense choice
+        // License choice
+        {
+            type: "list",
+            name: "license",
+            message: "Choose a license to use (Required)",
+            choices: ["GNU AGPLv3", "GNU GPLv3", "GNY LGPLv3", "Mozzila Public License 2.0", "Apache License 2.0", "MIT License", "Boost Software License 1.0"],
+            validate: licenseInput => {
+                if (licenseInput) {
+                    return true;
+                } else {
+                    return false;
+                }
 
+            }
+        },
         // End of function
     ]);
 }
-questionsPrompt();
-// // function to write README file
-// function writeToFile(fileName, data) {
-// }
+// function to create README file
+const writeFile = data => {
+    fs.writeFile("README.md", data, err => {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            console.log("Your README has been generated!")
+        }
+    })
+};
 
-// // function to initialize program
-// function init() {
-
-// }
-
-// // function call to initialize program
-// init();
-// console.log('Hello');
+// function to start program
+questions()
+    .then(answers => {
+        return generateReadme(answers);
+    })
+    .then(data => {
+        return writeFile(data);
+    })
+    .catch(err => {
+        console.log(err)
+    })
