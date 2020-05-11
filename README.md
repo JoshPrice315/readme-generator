@@ -1,5 +1,5 @@
 # README Generator
-
+![Github license](http://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Description
  A program that can be used to help make a professional looking README for your projects.
