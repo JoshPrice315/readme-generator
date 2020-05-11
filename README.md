@@ -27,7 +27,7 @@ Created by Josh Price
 ## Tests
 
 Here is a demonstration of the program:
-![](example.gif)
+![](utils/example.gif)
 For a higher quality video click the link below.
 https://drive.google.com/file/d/1zt0zQWKtxOt-9gPwoCao2BCHtjFs-Hc2/
 
